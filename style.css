@@ -1,0 +1,26 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#tictactoe {
+    width: 500px;
+    height: 500px;
+    background-color: #7fffd4;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.row {
+    height: 50px;
+    display: flex;
+    gap: 30px;
+    flex-direction: row;
+}
+.child {
+    width: 30px;
+    height: 30px;
+    background-color: aqua;
+}
