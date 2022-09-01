@@ -30,54 +30,63 @@ let displayController = (() => {
   }
   function checkEnding(currentBoard) {
     console.log(currentBoard);
+    let winner = ""
     if (
       currentBoard[0] == currentBoard[1] &&
       currentBoard[1] == currentBoard[2] &&
       currentBoard[0] !== " "
     ) {
-      console.log("game over");
+      winner = currentBoard[0];
+      console.log(winner, " Won");
     } else if (
       currentBoard[3] == currentBoard[4] &&
       currentBoard[4] == currentBoard[5] &&
       currentBoard[3] !== " "
     ) {
-      console.log("game over");
+        winner = currentBoard[3];
+        console.log(winner, " Won");
     } else if (
       currentBoard[6] == currentBoard[7] &&
       currentBoard[7] == currentBoard[8] &&
       currentBoard[6] !== " "
     ) {
-      console.log("game over");
+        winner = currentBoard[6];
+        console.log(winner, " Won");
     } else if (
       currentBoard[0] == currentBoard[4] &&
       currentBoard[4] == currentBoard[8] &&
       currentBoard[0] !== " "
     ) {
-      console.log("game over");
+        winner = currentBoard[0];
+        console.log(winner, " Won");
     } else if (
       currentBoard[2] == currentBoard[4] &&
       currentBoard[4] == currentBoard[6] &&
       currentBoard[2] !== " "
     ) {
-      console.log("game over");
+        winner = currentBoard[2];
+        console.log(winner, " Won");
     } else if (
       currentBoard[0] == currentBoard[3] &&
       currentBoard[3] == currentBoard[6] &&
       currentBoard[0] !== " "
     ) {
-      console.log("game over");
+        winner = currentBoard[0];
+        console.log(winner, " Won");
     } else if (
       currentBoard[1] == currentBoard[4] &&
       currentBoard[4] == currentBoard[7] &&
       currentBoard[1] !== " "
     ) {
-      console.log("game over");
+        winner = currentBoard[1];
+        console.log(winner, " Won");
     } else if (
       currentBoard[2] == currentBoard[5] &&
       currentBoard[5] == currentBoard[8] &&
       currentBoard[2] !== " "
     ) {
-      console.log("game over");
+        winner = currentBoard[2];
+        console.log(winner, " Won");
     } else if (checkIsFull(currentBoard == true)) {
       console.log("draw");
     }
