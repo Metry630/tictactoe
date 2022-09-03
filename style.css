@@ -8,10 +8,11 @@ body {
     width: 500px;
     height: 500px;
     background-color: #7fffd4;
-    display: flex;
+    display: none;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
 }
 .row {
     height: 50px;
