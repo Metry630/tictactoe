@@ -1,3 +1,8 @@
+let startGame = document.getElementById("start-game");
+let playerOneName = document.getElementById("player-one");
+let playerTwoName = document.getElementById("player-two");
+let tictactoeOverlay = document.getElementById("tictactoe");
+
 const playerFactory = (name, sign, currentMarkers) => {
   return { name, sign, currentMarkers };
 };
@@ -19,6 +24,14 @@ let gameBoard = (function () {
   };
 })();
 
+let gameForm = (function () {
+  startGame.addEventListener("click", () => openGame());
+  function openGame() {
+    modalOverlay.style.display = "none";
+    tictactoeOverlay.style.display = "flex";
+  }
+})();
+
 let displayController = (() => {
   function checkIsFull(currentBoard) {
     for (i = 0; i <= 9; i++) {
@@ -28,9 +41,20 @@ let displayController = (() => {
     }
     return true;
   }
+  let freezeClic = false;
+  document.addEventListener(
+    "click",
+    (e) => {
+      if (freezeClic && e.target.className == "child") {
+        e.stopPropagation();
+        e.preventDefault();
+      }
+    },
+    true
+  );
   function checkEnding(currentBoard) {
     console.log(currentBoard);
-    let winner = ""
+    let winner = "";
     if (
       currentBoard[0] == currentBoard[1] &&
       currentBoard[1] == currentBoard[2] &&
@@ -38,57 +62,66 @@ let displayController = (() => {
     ) {
       winner = currentBoard[0];
       console.log(winner, " Won");
+      freezeClic = true;
     } else if (
       currentBoard[3] == currentBoard[4] &&
       currentBoard[4] == currentBoard[5] &&
       currentBoard[3] !== " "
     ) {
-        winner = currentBoard[3];
-        console.log(winner, " Won");
+      winner = currentBoard[3];
+      console.log(winner, " Won");
+      freezeClic = true;
     } else if (
       currentBoard[6] == currentBoard[7] &&
       currentBoard[7] == currentBoard[8] &&
       currentBoard[6] !== " "
     ) {
-        winner = currentBoard[6];
-        console.log(winner, " Won");
+      winner = currentBoard[6];
+      console.log(winner, " Won");
+      freezeClic = true;
     } else if (
       currentBoard[0] == currentBoard[4] &&
       currentBoard[4] == currentBoard[8] &&
       currentBoard[0] !== " "
     ) {
-        winner = currentBoard[0];
-        console.log(winner, " Won");
+      winner = currentBoard[0];
+      console.log(winner, " Won");
+      freezeClic = true;
     } else if (
       currentBoard[2] == currentBoard[4] &&
       currentBoard[4] == currentBoard[6] &&
       currentBoard[2] !== " "
     ) {
-        winner = currentBoard[2];
-        console.log(winner, " Won");
+      winner = currentBoard[2];
+      console.log(winner, " Won");
+      freezeClic = true;
     } else if (
       currentBoard[0] == currentBoard[3] &&
       currentBoard[3] == currentBoard[6] &&
       currentBoard[0] !== " "
     ) {
-        winner = currentBoard[0];
-        console.log(winner, " Won");
+      winner = currentBoard[0];
+      console.log(winner, " Won");
+      freezeClic = true;
     } else if (
       currentBoard[1] == currentBoard[4] &&
       currentBoard[4] == currentBoard[7] &&
       currentBoard[1] !== " "
     ) {
-        winner = currentBoard[1];
-        console.log(winner, " Won");
+      winner = currentBoard[1];
+      console.log(winner, " Won");
+      freezeClic = true;
     } else if (
       currentBoard[2] == currentBoard[5] &&
       currentBoard[5] == currentBoard[8] &&
       currentBoard[2] !== " "
     ) {
-        winner = currentBoard[2];
-        console.log(winner, " Won");
+      winner = currentBoard[2];
+      console.log(winner, " Won");
+      freezeClic = true;
     } else if (checkIsFull(currentBoard == true)) {
       console.log("draw");
+      freezeClic = true;
     }
   }
   function displayMarkers(gameBoard) {
@@ -113,13 +146,18 @@ let displayController = (() => {
       return "X";
     }
   }
-  return { placeMarker };
+  function handleClick(gameBoard, i) {
+    displayController.placeMarker(gameBoard, i);
+  }
+  return { placeMarker, handleClick };
 })();
 
 for (let i = 1; i <= 9; i++) {
   let divI = document.getElementById(i);
-  divI.addEventListener("click", () =>
-    displayController.placeMarker(gameBoard, i)
+  divI.addEventListener(
+    "click",
+    () => displayController.handleClick(gameBoard, i),
+    { once: true }
   );
 }
 
