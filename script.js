@@ -2,13 +2,14 @@ let startGame = document.getElementById("start-game");
 let playerOneName = document.getElementById("player-one");
 let playerTwoName = document.getElementById("player-two");
 let tictactoeOverlay = document.getElementById("tictactoe");
-
+let playerOneDisplay = document.getElementById("p1");
+let playerTwoDisplay = document.getElementById("p2");
 const playerFactory = (name, sign, currentMarkers) => {
   return { name, sign, currentMarkers };
 };
 
-let playerOne = playerFactory("player one", "X", []);
-let playerTwo = playerFactory("player two", "O", []);
+let playerOne = playerFactory("player one", "O", []);
+let playerTwo = playerFactory("player two", "X", []);
 
 let gameBoard = (function () {
   return {
@@ -26,12 +27,23 @@ let gameBoard = (function () {
 
 let gameForm = (function () {
   startGame.addEventListener("click", () => openGame());
-  function openGame() {
+  function storeNames() {
+    let p1Name = playerOneName.value;
+    let p2Name = playerTwoName.value;
+    return { p1Name, p2Name };
+  }
+  function switchDisplay() {
+    console.log(storeNames());
+    playerOneDisplay.textContent = storeNames()["p1Name"] + ": O";
+    playerTwoDisplay.textContent = storeNames()["p2Name"] + ": X";
     modalOverlay.style.display = "none";
     tictactoeOverlay.style.display = "flex";
   }
+  function openGame() {
+    storeNames();
+    switchDisplay();
+  }
 })();
-
 let displayController = (() => {
   function checkIsFull(currentBoard) {
     for (i = 0; i <= 9; i++) {
