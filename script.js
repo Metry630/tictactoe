@@ -34,8 +34,8 @@ let gameForm = (function () {
   }
   function switchDisplay() {
     console.log(storeNames());
-    playerOneDisplay.textContent = "O: " + storeNames()["p1Name"];
-    playerTwoDisplay.textContent = "X: " + storeNames()["p2Name"];
+    playerOneDisplay.textContent = "X: " + storeNames()["p1Name"];
+    playerTwoDisplay.textContent = "O: " + storeNames()["p2Name"];
     modalStartOverlay.style.display = "none";
     tictactoeOverlay.style.display = "flex";
   }
@@ -76,7 +76,7 @@ let displayController = (() => {
     ) {
       winner = currentBoard[0];
       freezeClic = true;
-      winner == "O"
+      winner == "X"
         ? (winnerName = playerOneDisplay.textContent.slice(3))
         : (winnerName = playerTwoDisplay.textContent.slice(3));
       winnerDisplay.textContent = winnerName + " Won!";
@@ -88,7 +88,7 @@ let displayController = (() => {
     ) {
       winner = currentBoard[3];
       freezeClic = true;
-      winner == "O"
+      winner == "X"
         ? (winnerName = playerOneDisplay.textContent.slice(3))
         : (winnerName = playerTwoDisplay.textContent.slice(3));
       winnerDisplay.textContent = winnerName + " Won!";
@@ -101,7 +101,7 @@ let displayController = (() => {
       winner = currentBoard[6];
       console.log(winner, " Won");
       freezeClic = true;
-      winner == "O"
+      winner == "X"
         ? (winnerName = playerOneDisplay.textContent.slice(3))
         : (winnerName = playerTwoDisplay.textContent.slice(3));
       winnerDisplay.textContent = winnerName + " Won!";
@@ -114,7 +114,7 @@ let displayController = (() => {
       winner = currentBoard[0];
       console.log(winner, " Won");
       freezeClic = true;
-      winner == "O"
+      winner == "X"
         ? (winnerName = playerOneDisplay.textContent.slice(3))
         : (winnerName = playerTwoDisplay.textContent.slice(3));
       winnerDisplay.textContent = winnerName + " Won!";
@@ -127,7 +127,7 @@ let displayController = (() => {
       winner = currentBoard[2];
       console.log(winner, " Won");
       freezeClic = true;
-      winner == "O"
+      winner == "X"
         ? (winnerName = playerOneDisplay.textContent.slice(3))
         : (winnerName = playerTwoDisplay.textContent.slice(3));
       winnerDisplay.textContent = winnerName + " Won!";
@@ -140,7 +140,7 @@ let displayController = (() => {
       winner = currentBoard[0];
       console.log(winner, " Won");
       freezeClic = true;
-      winner == "O"
+      winner == "X"
         ? (winnerName = playerOneDisplay.textContent.slice(3))
         : (winnerName = playerTwoDisplay.textContent.slice(3));
       winnerDisplay.textContent = winnerName + " Won!";
@@ -153,7 +153,7 @@ let displayController = (() => {
       winner = currentBoard[1];
       console.log(winner, " Won");
       freezeClic = true;
-      winner == "O"
+      winner == "X"
         ? (winnerName = playerOneDisplay.textContent.slice(3))
         : (winnerName = playerTwoDisplay.textContent.slice(3));
       winnerDisplay.textContent = winnerName + " Won!";
@@ -166,7 +166,7 @@ let displayController = (() => {
       winner = currentBoard[2];
       console.log(winner, " Won");
       freezeClic = true;
-      winner == "O"
+      winner == "X"
         ? (winnerName = playerOneDisplay.textContent.slice(3))
         : (winnerName = playerTwoDisplay.textContent.slice(3));
       winnerDisplay.textContent = winnerName + " Won!";
@@ -189,7 +189,7 @@ let displayController = (() => {
     displayMarkers(gameBoard);
     checkEnding(gameBoard);
   }
-  let markersUsed = ["O"];
+  let markersUsed = ["X"];
   function currentMarker() {
     if (markersUsed[markersUsed.length - 1] == "O") {
       markersUsed.push("X");
