@@ -4,12 +4,11 @@ let playerTwoName = document.getElementById("player-two");
 let tictactoeOverlay = document.getElementById("tictactoe");
 let playerOneDisplay = document.getElementById("p1");
 let playerTwoDisplay = document.getElementById("p2");
+let winnerDisplay = document.getElementById("winnerName");
+let modalCongratsOverlay = document.getElementById("modalCongratsOverlay");
 const playerFactory = (name, sign, currentMarkers) => {
   return { name, sign, currentMarkers };
 };
-
-let playerOne = playerFactory("player one", "O", []);
-let playerTwo = playerFactory("player two", "X", []);
 
 let gameBoard = (function () {
   return {
@@ -34,15 +33,17 @@ let gameForm = (function () {
   }
   function switchDisplay() {
     console.log(storeNames());
-    playerOneDisplay.textContent = storeNames()["p1Name"] + ": O";
-    playerTwoDisplay.textContent = storeNames()["p2Name"] + ": X";
-    modalOverlay.style.display = "none";
+    playerOneDisplay.textContent = "O: " + storeNames()["p1Name"];
+    playerTwoDisplay.textContent = "X: " + storeNames()["p2Name"];
+    modalStartOverlay.style.display = "none";
     tictactoeOverlay.style.display = "flex";
   }
   function openGame() {
     storeNames();
     switchDisplay();
   }
+  //let playerOne = playerFactory(storeNames()["p1Name"], "O", []);
+  //let playerTwo = playerFactory(storeNames()["p2Name"], "X", []);
 })();
 let displayController = (() => {
   function checkIsFull(currentBoard) {
@@ -67,22 +68,31 @@ let displayController = (() => {
   function checkEnding(currentBoard) {
     console.log(currentBoard);
     let winner = "";
+    let winnerName = "";
     if (
       currentBoard[0] == currentBoard[1] &&
       currentBoard[1] == currentBoard[2] &&
       currentBoard[0] !== " "
     ) {
       winner = currentBoard[0];
-      console.log(winner, " Won");
       freezeClic = true;
+      winner == "O"
+        ? (winnerName = playerOneDisplay.textContent.slice(3))
+        : (winnerName = playerTwoDisplay.textContent.slice(3));
+      winnerDisplay.textContent = winnerName + " Won!";
+      modalCongratsOverlay.style.display = "flex";
     } else if (
       currentBoard[3] == currentBoard[4] &&
       currentBoard[4] == currentBoard[5] &&
       currentBoard[3] !== " "
     ) {
       winner = currentBoard[3];
-      console.log(winner, " Won");
       freezeClic = true;
+      winner == "O"
+        ? (winnerName = playerOneDisplay.textContent.slice(3))
+        : (winnerName = playerTwoDisplay.textContent.slice(3));
+      winnerDisplay.textContent = winnerName + " Won!";
+      modalCongratsOverlay.style.display = "flex";
     } else if (
       currentBoard[6] == currentBoard[7] &&
       currentBoard[7] == currentBoard[8] &&
@@ -91,6 +101,11 @@ let displayController = (() => {
       winner = currentBoard[6];
       console.log(winner, " Won");
       freezeClic = true;
+      winner == "O"
+        ? (winnerName = playerOneDisplay.textContent.slice(3))
+        : (winnerName = playerTwoDisplay.textContent.slice(3));
+      winnerDisplay.textContent = winnerName + " Won!";
+      modalCongratsOverlay.style.display = "flex";
     } else if (
       currentBoard[0] == currentBoard[4] &&
       currentBoard[4] == currentBoard[8] &&
@@ -99,6 +114,11 @@ let displayController = (() => {
       winner = currentBoard[0];
       console.log(winner, " Won");
       freezeClic = true;
+      winner == "O"
+        ? (winnerName = playerOneDisplay.textContent.slice(3))
+        : (winnerName = playerTwoDisplay.textContent.slice(3));
+      winnerDisplay.textContent = winnerName + " Won!";
+      modalCongratsOverlay.style.display = "flex";
     } else if (
       currentBoard[2] == currentBoard[4] &&
       currentBoard[4] == currentBoard[6] &&
@@ -107,6 +127,11 @@ let displayController = (() => {
       winner = currentBoard[2];
       console.log(winner, " Won");
       freezeClic = true;
+      winner == "O"
+        ? (winnerName = playerOneDisplay.textContent.slice(3))
+        : (winnerName = playerTwoDisplay.textContent.slice(3));
+      winnerDisplay.textContent = winnerName + " Won!";
+      modalCongratsOverlay.style.display = "flex";
     } else if (
       currentBoard[0] == currentBoard[3] &&
       currentBoard[3] == currentBoard[6] &&
@@ -115,6 +140,11 @@ let displayController = (() => {
       winner = currentBoard[0];
       console.log(winner, " Won");
       freezeClic = true;
+      winner == "O"
+        ? (winnerName = playerOneDisplay.textContent.slice(3))
+        : (winnerName = playerTwoDisplay.textContent.slice(3));
+      winnerDisplay.textContent = winnerName + " Won!";
+      modalCongratsOverlay.style.display = "flex";
     } else if (
       currentBoard[1] == currentBoard[4] &&
       currentBoard[4] == currentBoard[7] &&
@@ -123,6 +153,11 @@ let displayController = (() => {
       winner = currentBoard[1];
       console.log(winner, " Won");
       freezeClic = true;
+      winner == "O"
+        ? (winnerName = playerOneDisplay.textContent.slice(3))
+        : (winnerName = playerTwoDisplay.textContent.slice(3));
+      winnerDisplay.textContent = winnerName + " Won!";
+      modalCongratsOverlay.style.display = "flex";
     } else if (
       currentBoard[2] == currentBoard[5] &&
       currentBoard[5] == currentBoard[8] &&
@@ -131,9 +166,16 @@ let displayController = (() => {
       winner = currentBoard[2];
       console.log(winner, " Won");
       freezeClic = true;
+      winner == "O"
+        ? (winnerName = playerOneDisplay.textContent.slice(3))
+        : (winnerName = playerTwoDisplay.textContent.slice(3));
+      winnerDisplay.textContent = winnerName + " Won!";
+      modalCongratsOverlay.style.display = "flex";
     } else if (checkIsFull(currentBoard == true)) {
       console.log("draw");
       freezeClic = true;
+      winnerDisplay.textContent = "You drew!";
+      modalCongratsOverlay.style.display = "flex";
     }
   }
   function displayMarkers(gameBoard) {
@@ -174,4 +216,3 @@ for (let i = 1; i <= 9; i++) {
 }
 
 console.log(gameBoard[0]);
-console.log(playerOne["currentMarkers"], playerTwo);

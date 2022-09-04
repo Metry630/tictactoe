@@ -1,3 +1,8 @@
+:root {
+    --gap-between-boxes: 50px;
+}
+
+
 body {
     display: flex;
     justify-content: center;
@@ -10,18 +15,41 @@ body {
     background-color: #7fffd4;
     display: none;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
 }
 .row {
     height: 50px;
     display: flex;
-    gap: 30px;
+    gap: var(--gap-between-boxes);
     flex-direction: row;
 }
 .child {
-    width: 30px;
-    height: 30px;
+    width: 50px;
+    height: 50px;
     background-color: aqua;
+    font-size: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#names {
+    font-size: 30px;
+    align-self: flex-start;
+    justify-self: flex-start;
+}
+#row-container {
+    align-self: center;
+    justify-self: center;
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-between-boxes);
+}
+#modalCongratsOverlay {
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+#modalCongratsBackground {
+    width: 400px;
+    height: 400px;
+    background-color: aliceblue;
 }
