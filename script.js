@@ -6,6 +6,7 @@ let playerOneDisplay = document.getElementById("p1");
 let playerTwoDisplay = document.getElementById("p2");
 let winnerDisplay = document.getElementById("winnerName");
 let modalCongratsOverlay = document.getElementById("modalCongratsOverlay");
+let restart = document.getElementById("restart");
 const playerFactory = (name, sign, currentMarkers) => {
   return { name, sign, currentMarkers };
 };
@@ -42,10 +43,9 @@ let gameForm = (function () {
     storeNames();
     switchDisplay();
   }
-  //let playerOne = playerFactory(storeNames()["p1Name"], "O", []);
-  //let playerTwo = playerFactory(storeNames()["p2Name"], "X", []);
 })();
 let displayController = (() => {
+  restart.addEventListener('click', () => window.location.reload())
   function checkIsFull(currentBoard) {
     for (i = 0; i <= 9; i++) {
       if (currentBoard[i] != " ") {
