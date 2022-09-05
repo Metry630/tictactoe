@@ -45,10 +45,10 @@ let gameForm = (function () {
   }
 })();
 let displayController = (() => {
-  restart.addEventListener('click', () => window.location.reload())
+  restart.addEventListener("click", () => window.location.reload());
   function checkIsFull(currentBoard) {
-    for (i = 0; i <= 9; i++) {
-      if (currentBoard[i] != " ") {
+    for (let i = 0; i <= 8; i++) {
+      if (currentBoard[i] == " ") {
         return false;
       }
     }
@@ -68,115 +68,60 @@ let displayController = (() => {
   function checkEnding(currentBoard) {
     console.log(currentBoard);
     let winner = "";
-    let winnerName = "";
     if (
       currentBoard[0] == currentBoard[1] &&
       currentBoard[1] == currentBoard[2] &&
       currentBoard[0] !== " "
     ) {
       winner = currentBoard[0];
-      freezeClic = true;
-      winner == "X"
-        ? (winnerName = playerOneDisplay.textContent.slice(3))
-        : (winnerName = playerTwoDisplay.textContent.slice(3));
-      winnerDisplay.textContent = winnerName + " Won!";
-      modalCongratsOverlay.style.display = "flex";
     } else if (
       currentBoard[3] == currentBoard[4] &&
       currentBoard[4] == currentBoard[5] &&
       currentBoard[3] !== " "
     ) {
       winner = currentBoard[3];
-      freezeClic = true;
-      winner == "X"
-        ? (winnerName = playerOneDisplay.textContent.slice(3))
-        : (winnerName = playerTwoDisplay.textContent.slice(3));
-      winnerDisplay.textContent = winnerName + " Won!";
-      modalCongratsOverlay.style.display = "flex";
     } else if (
       currentBoard[6] == currentBoard[7] &&
       currentBoard[7] == currentBoard[8] &&
       currentBoard[6] !== " "
     ) {
       winner = currentBoard[6];
-      console.log(winner, " Won");
-      freezeClic = true;
-      winner == "X"
-        ? (winnerName = playerOneDisplay.textContent.slice(3))
-        : (winnerName = playerTwoDisplay.textContent.slice(3));
-      winnerDisplay.textContent = winnerName + " Won!";
-      modalCongratsOverlay.style.display = "flex";
     } else if (
       currentBoard[0] == currentBoard[4] &&
       currentBoard[4] == currentBoard[8] &&
       currentBoard[0] !== " "
     ) {
       winner = currentBoard[0];
-      console.log(winner, " Won");
-      freezeClic = true;
-      winner == "X"
-        ? (winnerName = playerOneDisplay.textContent.slice(3))
-        : (winnerName = playerTwoDisplay.textContent.slice(3));
-      winnerDisplay.textContent = winnerName + " Won!";
-      modalCongratsOverlay.style.display = "flex";
     } else if (
       currentBoard[2] == currentBoard[4] &&
       currentBoard[4] == currentBoard[6] &&
       currentBoard[2] !== " "
     ) {
       winner = currentBoard[2];
-      console.log(winner, " Won");
-      freezeClic = true;
-      winner == "X"
-        ? (winnerName = playerOneDisplay.textContent.slice(3))
-        : (winnerName = playerTwoDisplay.textContent.slice(3));
-      winnerDisplay.textContent = winnerName + " Won!";
-      modalCongratsOverlay.style.display = "flex";
     } else if (
       currentBoard[0] == currentBoard[3] &&
       currentBoard[3] == currentBoard[6] &&
       currentBoard[0] !== " "
     ) {
       winner = currentBoard[0];
-      console.log(winner, " Won");
-      freezeClic = true;
-      winner == "X"
-        ? (winnerName = playerOneDisplay.textContent.slice(3))
-        : (winnerName = playerTwoDisplay.textContent.slice(3));
-      winnerDisplay.textContent = winnerName + " Won!";
-      modalCongratsOverlay.style.display = "flex";
     } else if (
       currentBoard[1] == currentBoard[4] &&
       currentBoard[4] == currentBoard[7] &&
       currentBoard[1] !== " "
     ) {
       winner = currentBoard[1];
-      console.log(winner, " Won");
-      freezeClic = true;
-      winner == "X"
-        ? (winnerName = playerOneDisplay.textContent.slice(3))
-        : (winnerName = playerTwoDisplay.textContent.slice(3));
-      winnerDisplay.textContent = winnerName + " Won!";
-      modalCongratsOverlay.style.display = "flex";
     } else if (
       currentBoard[2] == currentBoard[5] &&
       currentBoard[5] == currentBoard[8] &&
       currentBoard[2] !== " "
     ) {
       winner = currentBoard[2];
-      console.log(winner, " Won");
-      freezeClic = true;
-      winner == "X"
-        ? (winnerName = playerOneDisplay.textContent.slice(3))
-        : (winnerName = playerTwoDisplay.textContent.slice(3));
-      winnerDisplay.textContent = winnerName + " Won!";
-      modalCongratsOverlay.style.display = "flex";
-    } else if (checkIsFull(currentBoard == true)) {
-      console.log("draw");
-      freezeClic = true;
-      winnerDisplay.textContent = "You drew!";
-      modalCongratsOverlay.style.display = "flex";
+    } else if (checkIsFull(currentBoard) == true) {
+      winner = "D";
+    } else {
+      return " ";
     }
+    return winner;
   }
   function displayMarkers(gameBoard) {
     for (let i = 0; i <= 8; i++) {
@@ -187,7 +132,20 @@ let displayController = (() => {
     let thisMarker = currentMarker();
     gameBoard[boxId - 1] = thisMarker;
     displayMarkers(gameBoard);
-    checkEnding(gameBoard);
+    if (checkEnding(gameBoard) != " ") {
+      let winnerName = "";
+      console.log(checkEnding(gameBoard), " Won");
+      freezeClic = true;
+      checkEnding(gameBoard) == "X"
+        ? (winnerName = playerOneDisplay.textContent.slice(3))
+        : checkEnding(gameBoard) == "O"
+        ? (winnerName = playerTwoDisplay.textContent.slice(3))
+        : (winnerName = "You drew!");
+      checkEnding(gameBoard) == "D"
+        ? (winnerDisplay.textContent = winnerName)
+        : (winnerDisplay.textContent = winnerName + " Won!");
+      modalCongratsOverlay.style.display = "flex";
+    }
   }
   let markersUsed = ["X"];
   function currentMarker() {
@@ -203,7 +161,7 @@ let displayController = (() => {
   function handleClick(gameBoard, i) {
     displayController.placeMarker(gameBoard, i);
   }
-  return { placeMarker, handleClick };
+  return { placeMarker, handleClick, checkEnding };
 })();
 
 for (let i = 1; i <= 9; i++) {
@@ -215,4 +173,31 @@ for (let i = 1; i <= 9; i++) {
   );
 }
 
-console.log(gameBoard[0]);
+/*
+ending position naikin skor ke smua yg bs reach dia
+baru naikin lagi
+habis itu naikin sampe ke posisi "awal"
+pilih move pertama yang paling tinggi skornya
+
+return value yg dari diri, baru tinggal += bawah
+for(all possivle moves){my score += movescore}
+*/
+let ai = (function () {
+  function recursiveCheck(boardContents, currentTurn, botSign) {
+    let numBoxesFilled = 0;
+    let emptyBoxIndex = [];
+    for (let i = 0; i <= 8; i++) {
+      if (boardContents[i] != " ") {
+        numBoxesFilled += 1;
+        emptyBoxIndex.push(i);
+      }
+    }
+    if (numBoxesFilled == 8) {
+      let boardCopy = boardContents;
+      boardCopy[emptyBoxIndex][0] == botSign;
+      displayController.checkEnding(boardCopy);
+    }
+  }
+})();
+
+console.log(gameBoard);
