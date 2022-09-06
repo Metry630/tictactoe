@@ -7,6 +7,15 @@ let playerTwoDisplay = document.getElementById("p2");
 let winnerDisplay = document.getElementById("winnerName");
 let modalCongratsOverlay = document.getElementById("modalCongratsOverlay");
 let restart = document.getElementById("restart");
+for (let i = 1; i <= 9; i++) {
+  let divI = document.getElementById(i);
+  divI.addEventListener(
+    "click",
+    () => displayController.handleClick(gameBoard, i),
+    { once: true }
+  );
+}
+
 const playerFactory = (name, sign, currentMarkers) => {
   return { name, sign, currentMarkers };
 };
@@ -164,15 +173,6 @@ let displayController = (() => {
   return { placeMarker, handleClick, checkEnding };
 })();
 
-for (let i = 1; i <= 9; i++) {
-  let divI = document.getElementById(i);
-  divI.addEventListener(
-    "click",
-    () => displayController.handleClick(gameBoard, i),
-    { once: true }
-  );
-}
-
 /*
 ending position naikin skor ke smua yg bs reach dia
 baru naikin lagi
@@ -190,12 +190,11 @@ let ai = (function () {
       if (boardContents[i] == " ") {
         numBoxesFilled -= 1;
         emptyBoxIndex.push(i);
-        console.log(i)
+        console.log(i);
       }
     }
     let filledUpBoard = boardContents;
     if (numBoxesFilled == 8) {
-      console.log(emptyBoxIndex)
       filledUpBoard[emptyBoxIndex] == botSign;
       if (displayController.checkEnding(filledUpBoard) == botSign) {
         return 10;
@@ -207,7 +206,7 @@ let ai = (function () {
     } else if (numBoxesFilled < 8) {
       let score = 0;
       for (element in emptyBoxIndex) {
-        filledUpBoard[emptyBoxIndex][element] = botSign;
+        filledUpBoard[emptyBoxIndex[element]] = botSign;
         score += recursiveScore(filledUpBoard);
       }
       return score;
@@ -217,6 +216,6 @@ let ai = (function () {
 })();
 
 console.log(
-  ai.recursiveScore(["X", "O", "X", " ", "X", "O", "X", "O", "X", "O"], "X")
+  ai.recursiveScore(["X", " ", " ", " ", "X", " ", "X", " ", " "], "X")
 );
 console.log(gameBoard);
