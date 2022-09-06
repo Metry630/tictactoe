@@ -183,21 +183,40 @@ return value yg dari diri, baru tinggal += bawah
 for(all possivle moves){my score += movescore}
 */
 let ai = (function () {
-  function recursiveCheck(boardContents, currentTurn, botSign) {
-    let numBoxesFilled = 0;
+  function recursiveScore(boardContents, botSign) {
+    let numBoxesFilled = 8;
     let emptyBoxIndex = [];
     for (let i = 0; i <= 8; i++) {
-      if (boardContents[i] != " ") {
-        numBoxesFilled += 1;
+      if (boardContents[i] == " ") {
+        numBoxesFilled -= 1;
         emptyBoxIndex.push(i);
+        console.log(i)
       }
     }
+    let filledUpBoard = boardContents;
     if (numBoxesFilled == 8) {
-      let boardCopy = boardContents;
-      boardCopy[emptyBoxIndex][0] == botSign;
-      displayController.checkEnding(boardCopy);
+      console.log(emptyBoxIndex)
+      filledUpBoard[emptyBoxIndex] == botSign;
+      if (displayController.checkEnding(filledUpBoard) == botSign) {
+        return 10;
+      } else if (displayController.checkEnding(filledUpBoard) == "D") {
+        return 0;
+      } else {
+        return -10;
+      }
+    } else if (numBoxesFilled < 8) {
+      let score = 0;
+      for (element in emptyBoxIndex) {
+        filledUpBoard[emptyBoxIndex][element] = botSign;
+        score += recursiveScore(filledUpBoard);
+      }
+      return score;
     }
   }
+  return { recursiveScore };
 })();
 
+console.log(
+  ai.recursiveScore(["X", "O", "X", " ", "X", "O", "X", "O", "X", "O"], "X")
+);
 console.log(gameBoard);
