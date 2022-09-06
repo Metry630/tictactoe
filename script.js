@@ -200,20 +200,23 @@ let ai = (function () {
       currentSign = "X";
     }
     let filledUpBoard = boardContents;
-    if (numBoxesFilled == 8) {
-      filledUpBoard[emptyBoxIndex[0]] = currentSign;
-      if (displayController.checkEnding(filledUpBoard) == botSign) {
-        return -10;
-      } else if (displayController.checkEnding(filledUpBoard) == "D") {
-        return 0;
-      } else {
-        return 10;
-      }
-    } else if (numBoxesFilled < 8) {
+
+    filledUpBoard[emptyBoxIndex[0]] = currentSign;
+    if (displayController.checkEnding(filledUpBoard) == botSign) {
+      return 10;
+    } else if (displayController.checkEnding(filledUpBoard) == "D") {
+      return 0;
+    } else if (
+      displayController.checkEnding(filledUpBoard) != " "
+    ) {
+      return -10;
+    }
+    if (numBoxesFilled < 8) {
       let score = 0;
       for (let i = 0; i <= emptyBoxIndex.length - 1; i++) {
-        filledUpBoard[emptyBoxIndex[i]] = currentSign;
-        score += recursiveScore(filledUpBoard);
+        let filledUpCopy = filledUpBoard;
+        filledUpCopy[emptyBoxIndex[i]] = currentSign;
+        score += recursiveScore(filledUpCopy);
       }
       return score;
     }
@@ -222,6 +225,5 @@ let ai = (function () {
 })();
 
 console.log(
-  ai.recursiveScore(["X", "X", " ", "X", "O", " ", "O", "O", "X"], "X")
+  ai.recursiveScore(["O", "X", "O", "X", "O", " ", " ", "X", " "], "X")
 );
-console.log(gameBoard);
