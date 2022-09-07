@@ -207,26 +207,44 @@ let ai = (function () {
       let score = 0;
       for (let i = 0; i <= emptyBoxIndex.length - 1; i++) {
         let filledUpCopy = boardContents;
-        let currentIteration = filledUpCopy;
         let val = emptyBoxIndex[i];
-        currentIteration[val] = currentSign;
-        console.log(filledUpCopy);
-        console.log(currentIteration);
-        console.log(recursiveScore(currentIteration, botSign));
-        score += recursiveScore(currentIteration, botSign);
-        currentIteration.splice(val, 1, " ");
+        filledUpCopy[val] = currentSign;
+        score += recursiveScore(filledUpCopy, botSign);
+        filledUpCopy.splice(val, 1, " ");
       }
       return score;
     }
   }
-  return { recursiveScore };
+  function chooseMove(boardContents, botSign) {
+    let moveScores = {};
+    let emptyBoxIndex = [];
+    for (let i = 0; i <= 8; i++) {
+      if (boardContents[i] == " ") {
+        emptyBoxIndex.push(i);
+      }
+    }
+    for (let i = 0; i <= emptyBoxIndex.length - 1; i++) {
+      let filledUpCopy = boardContents;
+      let val = emptyBoxIndex[i];
+      moveScores[val] = recursiveScore(filledUpCopy, botSign);
+      filledUpCopy.splice(val, 1, " ");
+    }
+    let moveChoice = emptyBoxIndex[0];
+    for (possibleMove in moveScores) {
+      if (moveScores[possibleMove] >= moveScores[moveChoice]) {
+        moveChoice = possibleMove;
+      }
+    }
+    return moveChoice
+  }
+  return { chooseMove };
 })();
 
 //harusnya 20 skornya
 console.log(
-  ai.recursiveScore(["X", "X", " ", "O", "X", " ", "O", "O", " "], "X")
+  ai.chooseMove(["X", "X", " ", "O", "X", " ", "O", "O", " "], "X")
 );
 //harusnya 10 skornya
 console.log(
-  ai.recursiveScore(["X", "X", " ", "O", "O", "X", "O", "O", "X"], "X")
+  ai.chooseMove(["X", "X", " ", "O", "O", "X", "O", "O", "X"], "X")
 );
