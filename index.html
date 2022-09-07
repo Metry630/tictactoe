@@ -1,60 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="style.css" rel="stylesheet">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="style.css" rel="stylesheet" />
     <title>Document</title>
-</head>
-<body>
-    <div id = "modalStartOverlay" class = 'modalStart'>
-        <div id = "modalStartBackground">
+  </head>
+  <body>
+    <div id="modalStartOverlay" class="modalStart">
+      <div id="modalStartBackground">
+        <div>
+          <div>
+            <input
+              type="text"
+              name="player-one"
+              id="player-one"
+              placeholder="Player One"
+            />
+            <label for="player-one">X</label>
+          </div>
+          <div>
+            <input
+              type="text"
+              name="player-two"
+              id="player-two"
+              placeholder="Player Two"
+            />
+            <label for="player-two">O</label>
             <div>
-                <div>
-                    <input type = "text" name = "player-one" id = 'player-one' placeholder="Player One">
-                    <label for="player-one">X</label>
-                </div> 
-                <div>
-                    <input type = "text" name = "player-two" id = 'player-two' placeholder="Player Two">
-                    <label for="player-two">O</label>
-                </div>
-                <div>
-                    <button id = "start-game">Start Game</button>
-                </div>
+              P2 is a:
+              <input type="radio" name="p2-type" value="human" />
+              <label for="human">Human</label>
+              <input type="radio" name="p2-type" value="computer" />
+              <label for="computer">Computer</label>
             </div>
+          </div>
+          <div>
+            <button id="start-game">Start Game</button>
+          </div>
         </div>
+      </div>
     </div>
-    <div id = "modalCongratsOverlay">
-        <div id = "modalCongratsBackground">
-            <div id = "winnerName"></div>
-            <button id = "restart">Restart Game</button>
-        </div>
+    <div id="modalCongratsOverlay">
+      <div id="modalCongratsBackground">
+        <div id="winnerName"></div>
+        <button id="restart">Restart Game</button>
+      </div>
     </div>
-    <div id = "tictactoe">
-        <div id = "names">
-            <div id = "p1"></div>
-            <div id = "p2"></div>
+    <div id="tictactoe">
+      <div id="names">
+        <div id="p1"></div>
+        <div id="p2"></div>
+      </div>
+      <div id="row-container">
+        <div class="row">
+          <div id="1" class="child"></div>
+          <div id="2" class="child"></div>
+          <div id="3" class="child"></div>
         </div>
-        <div id = "row-container">
-            <div class = "row">
-                <div id="1" class = "child"></div>
-                <div id="2" class = "child"></div>
-                <div id="3" class = "child"></div>
-            </div>
-            <div class = "row">
-                <div id="4" class = "child"></div>
-                <div id="5" class = "child"></div>
-                <div id="6" class = "child"></div>
-            </div>
-            <div class = "row">
-                <div id="7" class = "child"></div>
-                <div id="8" class = "child"></div>
-                <div id="9" class = "child"></div>
-            </div>
-        </div>  
+        <div class="row">
+          <div id="4" class="child"></div>
+          <div id="5" class="child"></div>
+          <div id="6" class="child"></div>
+        </div>
+        <div class="row">
+          <div id="7" class="child"></div>
+          <div id="8" class="child"></div>
+          <div id="9" class="child"></div>
+        </div>
+      </div>
     </div>
 
-    <script src = "script.js"></script>
-</body>
+    <script src="script.js"></script>
+  </body>
 </html>
