@@ -75,7 +75,6 @@ let displayController = (() => {
     true
   );
   function checkEnding(currentBoard) {
-    console.log(currentBoard);
     let winner = "";
     if (
       currentBoard[0] == currentBoard[1] &&
@@ -184,46 +183,46 @@ for(all possivle moves){my score += movescore}
 */
 let ai = (function () {
   function recursiveScore(boardContents, botSign) {
-    let numBoxesFilled = 8;
+    console.log(boardContents)
+    // list indexes of empty spaces
     let emptyBoxIndex = [];
     for (let i = 0; i <= 8; i++) {
       if (boardContents[i] == " ") {
-        numBoxesFilled -= 1;
         emptyBoxIndex.push(i);
         console.log(i);
       }
     }
+    //get whose turn it is
     let currentSign = " ";
-    if (numBoxesFilled % 2 == 1) {
-      currentSign = "O";
-    } else {
+    if (emptyBoxIndex.length % 2 == 0) {
       currentSign = "X";
+    } else {
+      currentSign = "O";
     }
-    let filledUpBoard = boardContents;
-
-    filledUpBoard[emptyBoxIndex[0]] = currentSign;
-    if (displayController.checkEnding(filledUpBoard) == botSign) {
+    console.log(currentSign);
+    //base cases
+    if (displayController.checkEnding(boardContents) == botSign) {
       return 10;
-    } else if (displayController.checkEnding(filledUpBoard) == "D") {
+    } else if (displayController.checkEnding(boardContents) == "D") {
       return 0;
-    } else if (
-      displayController.checkEnding(filledUpBoard) != " "
-    ) {
+    } else if (displayController.checkEnding(boardContents) == "X" || "O") {
       return -10;
     }
-    if (numBoxesFilled < 8) {
-      let score = 0;
-      for (let i = 0; i <= emptyBoxIndex.length - 1; i++) {
-        let filledUpCopy = filledUpBoard;
-        filledUpCopy[emptyBoxIndex[i]] = currentSign;
-        score += recursiveScore(filledUpCopy);
-      }
-      return score;
+    //go through every possible move and sum the scores
+    let score = 0;
+    for (let i = 0; i <= emptyBoxIndex.length - 1; i++) {
+      let filledUpCopy = boardContents;
+      filledUpCopy[emptyBoxIndex[i]] = currentSign;
+      console.log(filledUpCopy)
+      console.log(recursiveScore(filledUpCopy));
+      score += recursiveScore(filledUpCopy);
+      filledUpCopy[emptyBoxIndex[i]] = " "
     }
+    return score;
   }
   return { recursiveScore };
 })();
 
 console.log(
-  ai.recursiveScore(["O", "X", "O", "X", "O", " ", " ", "X", " "], "X")
+  ai.recursiveScore(["X", "X", " ", "O", "X", " ", "O", "O", " "], "X")
 );
