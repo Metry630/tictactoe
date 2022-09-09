@@ -7,13 +7,13 @@ let playerTwoDisplay = document.getElementById("p2");
 let winnerDisplay = document.getElementById("winnerName");
 let modalCongratsOverlay = document.getElementById("modalCongratsOverlay");
 let restart = document.getElementById("restart");
-for (let i = 1; i <= 9; i++) {
-  let divI = document.getElementById(i);
-  divI.addEventListener(
-    "click",
-    () => displayController.handleClick(gameBoard, i),
-    { once: true }
-  );
+
+for (let i = 0; i <= 8; i++) {
+  document
+    .getElementById(i)
+    .addEventListener("click", () =>
+      displayController.handleClick(gameBoard, i)
+    );
 }
 
 const playerFactory = (name, sign, currentMarkers) => {
@@ -42,16 +42,18 @@ let gameForm = (function () {
     return { p1Name, p2Name };
   }
   function switchDisplay() {
-    console.log(storeNames());
     playerOneDisplay.textContent = "X: " + storeNames()["p1Name"];
     playerTwoDisplay.textContent = "O: " + storeNames()["p2Name"];
     modalStartOverlay.style.display = "none";
     tictactoeOverlay.style.display = "flex";
+    let playerTwoType = document.querySelector("input[name=p2-type]:checked");
+    return playerTwoType;
   }
   function openGame() {
     storeNames();
     switchDisplay();
   }
+  return { switchDisplay };
 })();
 let displayController = (() => {
   restart.addEventListener("click", () => window.location.reload());
@@ -133,16 +135,15 @@ let displayController = (() => {
   }
   function displayMarkers(gameBoard) {
     for (let i = 0; i <= 8; i++) {
-      document.getElementById(i + 1).textContent = gameBoard[i];
+      document.getElementById(i).textContent = gameBoard[i];
     }
   }
   function placeMarker(gameBoard, boxId) {
     let thisMarker = currentMarker();
-    gameBoard[boxId - 1] = thisMarker;
+    gameBoard[boxId] = thisMarker;
     displayMarkers(gameBoard);
     if (checkEnding(gameBoard) != " ") {
       let winnerName = "";
-      console.log(checkEnding(gameBoard), " Won");
       freezeClic = true;
       checkEnding(gameBoard) == "X"
         ? (winnerName = playerOneDisplay.textContent.slice(3))
@@ -162,45 +163,44 @@ let displayController = (() => {
       return "O";
     } else if (markersUsed[markersUsed.length - 1] == "X") {
       markersUsed.push("O");
-      console.log(markersUsed);
       return "X";
     }
   }
   function handleClick(gameBoard, i) {
-    displayController.placeMarker(gameBoard, i);
+    if (gameBoard[i] == " ") {
+      displayController.placeMarker(gameBoard, i);
+      if (gameForm.switchDisplay().value == "computer") {
+        let clickChoice = ai.chooseMove(gameBoard, "O");
+        setTimeout(1000)
+        placeMarker(gameBoard, clickChoice);
+        document.getElementById(i).once = false;
+      }
+    }
   }
-  return { placeMarker, handleClick, checkEnding };
+  return { handleClick, checkEnding, placeMarker };
 })();
-
 let ai = (function () {
-  function recursiveScore(boardContents, botSign) {
-    console.log(botSign);
-    console.log(boardContents);
+  function recursiveScore(boardContents) {
     // list indexes of empty spaces
     let emptyBoxIndex = [];
     for (let i = 0; i <= 8; i++) {
       if (boardContents[i] == " ") {
         emptyBoxIndex.push(i);
-        console.log(i);
       }
     }
     //get whose turn it is
-    let currentSign = " ";
+    let currentSign = "";
     if (emptyBoxIndex.length % 2 == 0) {
-      currentSign = "O";
-    } else {
       currentSign = "X";
+    } else {
+      currentSign = "O";
     }
-    console.log(currentSign);
     //base cases
-    if (displayController.checkEnding(boardContents) == botSign) {
+    if (displayController.checkEnding(boardContents) == "O") {
       return 10;
     } else if (displayController.checkEnding(boardContents) == "D") {
       return 0;
-    } else if (
-      displayController.checkEnding(boardContents) == "O" ||
-      displayController.checkEnding(boardContents) == "X"
-    ) {
+    } else if (displayController.checkEnding(boardContents) == "X") {
       return -10;
     } else {
       //go through every possible move and sum the scores
@@ -209,13 +209,13 @@ let ai = (function () {
         let filledUpCopy = boardContents;
         let val = emptyBoxIndex[i];
         filledUpCopy[val] = currentSign;
-        score += recursiveScore(filledUpCopy, botSign);
-        filledUpCopy.splice(val, 1, " ");
+        score += recursiveScore(filledUpCopy);
+        filledUpCopy[val] = " ";
       }
       return score;
     }
   }
-  function chooseMove(boardContents, botSign) {
+  function chooseMove(boardContents) {
     let moveScores = {};
     let emptyBoxIndex = [];
     for (let i = 0; i <= 8; i++) {
@@ -223,28 +223,27 @@ let ai = (function () {
         emptyBoxIndex.push(i);
       }
     }
+    console.log(emptyBoxIndex);
     for (let i = 0; i <= emptyBoxIndex.length - 1; i++) {
       let filledUpCopy = boardContents;
       let val = emptyBoxIndex[i];
-      moveScores[val] = recursiveScore(filledUpCopy, botSign);
-      filledUpCopy.splice(val, 1, " ");
+      filledUpCopy[val] = "O"
+      if(displayController.checkEnding(filledUpCopy) == "O"){
+        return val
+      }
+      moveScores[val] = recursiveScore(filledUpCopy);
+      console.log(moveScores[val]);
+      filledUpCopy[val] = " ";
     }
     let moveChoice = emptyBoxIndex[0];
     for (possibleMove in moveScores) {
-      if (moveScores[possibleMove] >= moveScores[moveChoice]) {
+    if (moveScores[possibleMove] > moveScores[moveChoice]) {
         moveChoice = possibleMove;
       }
     }
-    return moveChoice
+    console.log(moveScores);
+    return moveChoice;
   }
-  return { chooseMove };
+  return { chooseMove, recursiveScore };
 })();
-
-//harusnya 20 skornya
-console.log(
-  ai.chooseMove(["X", "X", " ", "O", "X", " ", "O", "O", " "], "X")
-);
-//harusnya 10 skornya
-console.log(
-  ai.chooseMove(["X", "X", " ", "O", "O", "X", "O", "O", "X"], "X")
-);
+//console.log(ai.chooseMove(["O", " ", "X", " ", "X", "X", "O", " ", " "]));
