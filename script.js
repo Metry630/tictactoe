@@ -47,6 +47,7 @@ let gameForm = (function () {
     modalStartOverlay.style.display = "none";
     tictactoeOverlay.style.display = "flex";
     let playerTwoType = document.querySelector("input[name=p2-type]:checked");
+    console.log(gameBoard);
     return playerTwoType;
   }
   function openGame() {
@@ -55,6 +56,7 @@ let gameForm = (function () {
   }
   return { switchDisplay };
 })();
+
 let displayController = (() => {
   restart.addEventListener("click", () => window.location.reload());
   function checkIsFull(currentBoard) {
@@ -170,9 +172,8 @@ let displayController = (() => {
     if (gameBoard[i] == " ") {
       displayController.placeMarker(gameBoard, i);
       if (gameForm.switchDisplay().value == "computer") {
-        let clickChoice = ai.chooseMove(gameBoard, "O");
-        setTimeout(1000)
-        placeMarker(gameBoard, clickChoice);
+        let clickChoice = ai.chooseMove(gameBoard);
+        displayController.placeMarker(gameBoard, clickChoice);
         document.getElementById(i).once = false;
       }
     }
@@ -189,11 +190,11 @@ let ai = (function () {
       }
     }
     //get whose turn it is
-    let currentSign = "";
+    let currentSign = " ";
     if (emptyBoxIndex.length % 2 == 0) {
-      currentSign = "X";
-    } else {
       currentSign = "O";
+    } else {
+      currentSign = "X";
     }
     //base cases
     if (displayController.checkEnding(boardContents) == "O") {
@@ -204,15 +205,29 @@ let ai = (function () {
       return -10;
     } else {
       //go through every possible move and sum the scores
-      let score = 0;
-      for (let i = 0; i <= emptyBoxIndex.length - 1; i++) {
-        let filledUpCopy = boardContents;
-        let val = emptyBoxIndex[i];
-        filledUpCopy[val] = currentSign;
-        score += recursiveScore(filledUpCopy);
-        filledUpCopy[val] = " ";
+      let filledUpCopy = boardContents;
+      if (currentSign == "X") {
+        let scores = [];
+        for (let i = 0; i <= emptyBoxIndex.length - 1; i++) {
+          let val = emptyBoxIndex[i];
+          filledUpCopy[val] = currentSign;
+          let nextScore = recursiveScore(filledUpCopy);
+          scores.push(nextScore);
+          filledUpCopy[val] = " ";
+        }
+        return Math.min(...scores);
+      } else if (currentSign == "O") {
+        let scores = [];
+        for (let i = 0; i <= emptyBoxIndex.length - 1; i++) {
+          let val = emptyBoxIndex[i];
+          filledUpCopy[val] = currentSign;
+          let nextScore = recursiveScore(filledUpCopy);
+          console.log(nextScore)
+          scores.push(nextScore);
+          filledUpCopy[val] = " ";
+        }
+        return Math.max(...scores);
       }
-      return score;
     }
   }
   function chooseMove(boardContents) {
@@ -223,27 +238,23 @@ let ai = (function () {
         emptyBoxIndex.push(i);
       }
     }
-    console.log(emptyBoxIndex);
     for (let i = 0; i <= emptyBoxIndex.length - 1; i++) {
       let filledUpCopy = boardContents;
       let val = emptyBoxIndex[i];
-      filledUpCopy[val] = "O"
-      if(displayController.checkEnding(filledUpCopy) == "O"){
-        return val
-      }
+      filledUpCopy[val] = "O";
       moveScores[val] = recursiveScore(filledUpCopy);
-      console.log(moveScores[val]);
       filledUpCopy[val] = " ";
     }
     let moveChoice = emptyBoxIndex[0];
     for (possibleMove in moveScores) {
-    if (moveScores[possibleMove] > moveScores[moveChoice]) {
+      if (moveScores[possibleMove] > moveScores[moveChoice]) {
         moveChoice = possibleMove;
       }
     }
-    console.log(moveScores);
+    console.log(moveScores)
     return moveChoice;
   }
   return { chooseMove, recursiveScore };
 })();
-//console.log(ai.chooseMove(["O", " ", "X", " ", "X", "X", "O", " ", " "]));
+//console.log(ai.recursiveScore(["X", "O", "O", " ", "X", " ", " ", "X", " ", " "]));
+console.log(ai.recursiveScore(["X", "X", "O", "O", "O", " ", "X", " ", " "]));
