@@ -47,7 +47,6 @@ let gameForm = (function () {
     modalStartOverlay.style.display = "none";
     tictactoeOverlay.style.display = "flex";
     let playerTwoType = document.querySelector("input[name=p2-type]:checked");
-    console.log(gameBoard);
     return playerTwoType;
   }
   function openGame() {
@@ -222,7 +221,6 @@ let ai = (function () {
           let val = emptyBoxIndex[i];
           filledUpCopy[val] = currentSign;
           let nextScore = recursiveScore(filledUpCopy);
-          console.log(nextScore)
           scores.push(nextScore);
           filledUpCopy[val] = " ";
         }
