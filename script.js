@@ -16,10 +16,6 @@ for (let i = 0; i <= 8; i++) {
     );
 }
 
-const playerFactory = (name, sign, currentMarkers) => {
-  return { name, sign, currentMarkers };
-};
-
 let gameBoard = (function () {
   return {
     0: " ",
@@ -154,7 +150,9 @@ let displayController = (() => {
       checkEnding(gameBoard) == "D"
         ? (winnerDisplay.textContent = winnerName)
         : (winnerDisplay.textContent = winnerName + " Won!");
-      modalCongratsOverlay.style.display = "flex";
+      setTimeout(function () {
+        modalCongratsOverlay.style.display = "flex";
+      }, 1000);
     }
   }
   let markersUsed = ["X"];
@@ -169,15 +167,17 @@ let displayController = (() => {
   }
   function handleClick(gameBoard, i) {
     if (gameBoard[i] == " ") {
-      displayController.placeMarker(gameBoard, i);
+      placeMarker(gameBoard, i);
       if (gameForm.switchDisplay().value == "computer") {
         let clickChoice = ai.chooseMove(gameBoard);
-        displayController.placeMarker(gameBoard, clickChoice);
+        setTimeout(function () {
+          placeMarker(gameBoard, clickChoice);
+        }, 500);
         document.getElementById(i).once = false;
       }
     }
   }
-  return { handleClick, checkEnding, placeMarker };
+  return { handleClick, checkEnding };
 })();
 let ai = (function () {
   function recursiveScore(boardContents) {
@@ -203,7 +203,7 @@ let ai = (function () {
     } else if (displayController.checkEnding(boardContents) == "X") {
       return -10;
     } else {
-      //go through every possible move and sum the scores
+      //go through every possible move and run the minmax 
       let filledUpCopy = boardContents;
       if (currentSign == "X") {
         let scores = [];
@@ -249,14 +249,14 @@ let ai = (function () {
         moveChoice = possibleMove;
       }
     }
-    let bestMoves = []
-    for(possibleMove in moveScores){
-      if(moveScores[possibleMove] == moveScores[moveChoice]){
-        bestMoves.push(possibleMove)
+    let bestMoves = [];
+    for (possibleMove in moveScores) {
+      if (moveScores[possibleMove] == moveScores[moveChoice]) {
+        bestMoves.push(possibleMove);
       }
     }
     //pick random best move
-    return bestMoves[Math.floor(Math.random()*bestMoves.length)];
+    return bestMoves[Math.floor(Math.random() * bestMoves.length)];
   }
   return { chooseMove, recursiveScore };
 })();
