@@ -251,10 +251,14 @@ let ai = (function () {
         moveChoice = possibleMove;
       }
     }
-    console.log(moveScores)
-    return moveChoice;
+    let bestMoves = []
+    for(possibleMove in moveScores){
+      if(moveScores[possibleMove] == moveScores[moveChoice]){
+        bestMoves.push(possibleMove)
+      }
+    }
+    //pick random best move
+    return bestMoves[Math.floor(Math.random()*bestMoves.length)];
   }
   return { chooseMove, recursiveScore };
 })();
-//console.log(ai.recursiveScore(["X", "O", "O", " ", "X", " ", " ", "X", " ", " "]));
-console.log(ai.recursiveScore(["X", "X", "O", "O", "O", " ", "X", " ", " "]));
